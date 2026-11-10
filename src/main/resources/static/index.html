@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - Entrar</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<div class="login">
+    <form class="cartao" id="formLogin">
+        <h1>RuralMed</h1>
+        <p class="suave">Telessaúde para triagem em áreas rurais</p>
+
+        <div class="campo">
+            <label for="login">E-mail ou CPF</label>
+            <input id="login" required>
+        </div>
+        <div class="campo">
+            <label for="senha">Senha</label>
+            <input id="senha" type="password" required>
+        </div>
+        <button class="btn" type="submit" style="width:100%">Entrar</button>
+
+        <p class="contas suave">
+            Contas de teste (senha <code>ruralmed123</code>):<br>
+            <button type="button" onclick="preencher('acs@ruralmed.dev')">ACS</button> ·
+            <button type="button" onclick="preencher('ubs@ruralmed.dev')">UBS</button> ·
+            <button type="button" onclick="preencher('cardio@ruralmed.dev')">Cardiologista</button> ·
+            <button type="button" onclick="preencher('dermato@ruralmed.dev')">Dermatologista</button> ·
+            <button type="button" onclick="preencher('gestor@ruralmed.dev')">Gestor</button>
+        </p>
+    </form>
+</div>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261103"></script>
+<script>
+    const PAGINAS = { ACS: 'acs.html', UBS: 'ubs.html', MEDICO: 'medico.html', GESTOR: 'gestor.html' };
+
+    function preencher(email) {
+        document.getElementById('login').value = email;
+        document.getElementById('senha').value = 'ruralmed123';
+    }
+
+    document.getElementById('formLogin').addEventListener('submit', async (evento) => {
+        evento.preventDefault();
+        try {
+            const resposta = await api('/api/login', 'POST', {
+                login: document.getElementById('login').value,
+                senha: document.getElementById('senha').value
+            });
+            localStorage.setItem('sessao', JSON.stringify(resposta));
+            location.href = urlComPreview(PAGINAS[resposta.usuario.perfil]);
+        } catch (erro) {
+            avisar(erro.message, 'erro');
+        }
+    });
+</script>
+</body>
+</html>

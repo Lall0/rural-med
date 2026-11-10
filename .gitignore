@@ -1,0 +1,7 @@
+target/
+config/application.properties
+uploads/
+.idea/
+*.iml
+.vscode/
+.DS_Store

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - Gestor</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><span class="logo">+</span><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <span class="conexao" id="conexao"></span>
+        <button class="btn-icone" id="btnContraste" type="button" title="Alto contraste" onclick="alternarContraste()">◐</button>
+        <div class="quem"><span id="usuarioNome"></span><span class="chip">Gestor</span></div>
+        <button class="btn btn-sec btn-peq" type="button" onclick="sair()">Sair</button>
+    </div>
+</header>
+<nav class="abas">
+    <button class="aba" type="button" data-aba="relatorios" onclick="mostrarAba('relatorios')">Relatórios</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="relatorios">
+        <form class="cartao linha" onsubmit="gerarRelatorio(event)" style="align-items:flex-end">
+            <div class="campo" style="margin:0"><label for="inicio">De</label><input id="inicio" type="date" required></div>
+            <div class="campo" style="margin:0"><label for="fim">Até</label><input id="fim" type="date" required></div>
+            <button class="btn" type="submit">Gerar relatório</button>
+        </form>
+        <div id="relatorio"></div>
+
+        <form class="cartao linha" onsubmit="verExtrato(event)" style="align-items:flex-end">
+            <div class="campo" style="margin:0"><label for="mes">Extrato de repasses do mês</label><input id="mes" type="month" required></div>
+            <button class="btn" type="submit">Ver extrato</button>
+        </form>
+        <div id="extrato"></div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261103"></script>
+<script src="js/gestor.js"></script>
+</body>
+</html>

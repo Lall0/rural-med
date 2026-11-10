@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - ACS</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><span class="logo">+</span><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <span class="conexao" id="conexao"></span>
+        <button class="btn-icone" id="btnContraste" type="button" title="Alto contraste" onclick="alternarContraste()">◐</button>
+        <div class="quem"><span id="usuarioNome"></span><span class="chip">ACS</span></div>
+        <button class="btn btn-sec btn-peq" type="button" onclick="sair()">Sair</button>
+    </div>
+</header>
+<nav class="abas">
+    <button class="aba" type="button" data-aba="triagem" onclick="mostrarAba('triagem')">Nova triagem</button>
+    <button class="aba" type="button" data-aba="enviadas" onclick="mostrarAba('enviadas')">Minhas triagens</button>
+    <button class="aba" type="button" data-aba="pacientes" onclick="mostrarAba('pacientes')">Pacientes</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="triagem">
+        <div id="faixa"></div>
+        <form class="cartao" id="formTriagem" onsubmit="salvarTriagem(event)">
+            <h2>Nova triagem</h2>
+            <p class="suave peq">A triagem fica salva no celular e é enviada sozinha quando houver internet.</p>
+            <div class="campo"><label for="paciente">Paciente *</label>
+                <select id="paciente" required></select></div>
+            <div class="campo"><label for="queixa">Queixa principal *</label>
+                <input id="queixa" required></div>
+            <div class="grade tres">
+                <div class="campo"><label for="temperatura">Temperatura (°C) *</label>
+                    <input id="temperatura" type="number" step="0.1" min="30" max="45" required></div>
+                <div class="campo"><label for="pas">Pressão sistólica *</label>
+                    <input id="pas" type="number" min="50" max="300" required></div>
+                <div class="campo"><label for="pad">Pressão diastólica *</label>
+                    <input id="pad" type="number" min="30" max="200" required></div>
+                <div class="campo"><label for="fc">Freq. cardíaca (bpm) *</label>
+                    <input id="fc" type="number" min="20" max="250" required></div>
+                <div class="campo"><label for="sat">Saturação O₂ (%) *</label>
+                    <input id="sat" type="number" min="50" max="100" required></div>
+                <div class="campo"><label for="dor">Dor (0 a 10) *</label>
+                    <input id="dor" type="number" min="0" max="10" required></div>
+            </div>
+            <div class="campo"><label>Comorbidades</label>
+                <div class="checks">
+                    <label><input type="checkbox" name="comorbidade" value="diabetes">Diabetes</label>
+                    <label><input type="checkbox" name="comorbidade" value="hipertensão">Hipertensão</label>
+                    <label><input type="checkbox" name="comorbidade" value="cardiopatia">Cardiopatia</label>
+                    <label><input type="checkbox" name="comorbidade" value="doença pulmonar">Doença pulmonar</label>
+                </div></div>
+            <div class="campo"><label for="relato">Relato</label>
+                <textarea id="relato" placeholder="Sintomas nas palavras do paciente"></textarea>
+                <button class="btn btn-sec btn-peq" type="button" onclick="ditar()" style="margin-top:.4rem">🎤 Ditar (RNF01)</button></div>
+            <button class="btn" type="submit" style="width:100%">Salvar triagem</button>
+        </form>
+    </section>
+
+    <section data-aba="enviadas" hidden>
+        <h2>Minhas triagens</h2>
+        <div class="lista" id="listaTriagens"></div>
+    </section>
+
+    <section data-aba="pacientes" hidden>
+        <div class="linha entre">
+            <h2>Pacientes</h2>
+            <button class="btn" type="button" onclick="formPaciente(null)">Novo paciente</button>
+        </div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Nome</th><th>Idade</th><th>Microárea</th><th>Consentimento</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="tabelaPacientes"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261103"></script>
+<script src="js/pacientes.js"></script>
+<script src="js/acs.js"></script>
+</body>
+</html>

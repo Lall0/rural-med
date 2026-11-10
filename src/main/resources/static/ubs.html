@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - UBS</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><span class="logo">+</span><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <span class="conexao" id="conexao"></span>
+        <button class="btn-icone" id="btnContraste" type="button" title="Alto contraste" onclick="alternarContraste()">◐</button>
+        <div class="quem"><span id="usuarioNome"></span><span class="chip">Equipe da UBS</span></div>
+        <button class="btn btn-sec btn-peq" type="button" onclick="sair()">Sair</button>
+    </div>
+</header>
+<nav class="abas">
+    <button class="aba" type="button" data-aba="dossies" onclick="mostrarAba('dossies')">Dossiês</button>
+    <button class="aba" type="button" data-aba="pacientes" onclick="mostrarAba('pacientes')">Pacientes</button>
+    <button class="aba" type="button" data-aba="usuarios" onclick="mostrarAba('usuarios')">Usuários</button>
+    <button class="aba" type="button" data-aba="especialidades" onclick="mostrarAba('especialidades')">Especialidades</button>
+    <button class="aba" type="button" data-aba="clinicas" onclick="mostrarAba('clinicas')">Clínicas</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="dossies">
+        <div class="linha entre">
+            <h2>Dossiês recebidos</h2>
+            <select id="filtroStatus" onchange="carregarDossies()" style="max-width:240px">
+                <option value="SINCRONIZADO">Recebidos (a encaminhar)</option>
+                <option value="AGUARDANDO_ENCAMINHAMENTO">Aguardando médico</option>
+                <option value="ENCAMINHADO">Encaminhados</option>
+                <option value="LAUDO_EMITIDO">Com laudo</option>
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div class="lista" id="listaDossies"></div>
+    </section>
+
+    <section data-aba="pacientes" hidden>
+        <div class="linha entre">
+            <h2>Pacientes</h2>
+            <button class="btn" type="button" onclick="formPaciente(null)">Novo paciente</button>
+        </div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Nome</th><th>Idade</th><th>Microárea</th><th>Consentimento</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="tabelaPacientes"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section data-aba="usuarios" hidden>
+        <div class="linha entre">
+            <h2>Usuários</h2>
+            <button class="btn" type="button" onclick="formUsuario()">Novo usuário</button>
+        </div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="tabelaUsuarios"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section data-aba="especialidades" hidden>
+        <div class="linha entre">
+            <h2>Especialidades</h2>
+            <button class="btn" type="button" onclick="novaEspecialidade()">Nova especialidade</button>
+        </div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Nome</th><th></th></tr></thead>
+                <tbody id="tabelaEspecialidades"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section data-aba="clinicas" hidden>
+        <div class="linha entre">
+            <h2>Clínicas parceiras</h2>
+            <button class="btn" type="button" onclick="formClinica(null)">Nova clínica</button>
+        </div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Nome</th><th>CNPJ</th><th>Município</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="tabelaClinicas"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261103"></script>
+<script src="js/pacientes.js"></script>
+<script src="js/ubs.js"></script>
+</body>
+</html>

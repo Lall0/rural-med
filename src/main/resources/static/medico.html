@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - Médico</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><span class="logo">+</span><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <span class="conexao" id="conexao"></span>
+        <button class="btn-icone" id="btnContraste" type="button" title="Alto contraste" onclick="alternarContraste()">◐</button>
+        <div class="quem"><span id="usuarioNome"></span><span class="chip">Médico</span></div>
+        <button class="btn btn-sec btn-peq" type="button" onclick="sair()">Sair</button>
+    </div>
+</header>
+<nav class="abas">
+    <button class="aba" type="button" data-aba="fila" onclick="mostrarAba('fila')">Fila de casos</button>
+    <button class="aba" type="button" data-aba="laudos" onclick="mostrarAba('laudos')">Meus laudos</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="fila">
+        <h2>Fila de casos</h2>
+        <p class="suave peq">Do mais grave para o menos grave (RN05). Prioritários têm até 24 h (RN06).</p>
+        <div class="lista" id="listaFila"></div>
+    </section>
+
+    <section data-aba="laudos" hidden>
+        <h2>Meus laudos</h2>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Data</th><th>Paciente</th><th>CID</th><th></th></tr></thead>
+                <tbody id="tabelaLaudos"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261103"></script>
+<script src="js/medico.js"></script>
+</body>
+</html>
