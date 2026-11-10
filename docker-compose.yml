@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: ruralmed-mysql
+    environment:
+      MYSQL_DATABASE: ruralmed
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD antes de iniciar}
+      MYSQL_USER: ruralmed
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD antes de iniciar}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ruralmed-mysql-data:/var/lib/mysql
+
+volumes:
+  ruralmed-mysql-data:

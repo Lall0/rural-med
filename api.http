@@ -1,0 +1,75 @@
+### RuralMed - chamadas da API para demonstrar
+### 1) Faça o login e copie o "token" da resposta para a linha @token abaixo.
+
+@base = http://localhost:8080
+@token = COLE_O_TOKEN_AQUI
+
+### Login (RF01)
+POST {{base}}/api/login
+Content-Type: application/json
+
+{ "login": "ubs@ruralmed.dev", "senha": "ruralmed123" }
+
+### ---------------- CRUD de pacientes (login como UBS)
+
+### READ - listar
+GET {{base}}/api/pacientes
+Authorization: {{token}}
+
+### CREATE - cadastrar
+POST {{base}}/api/pacientes
+Authorization: {{token}}
+Content-Type: application/json
+
+{ "microarea": { "id": 1 }, "nome": "Carlos Nunes", "cpf": "71428793860",
+  "dataNascimento": "1965-03-14", "consentimentoEm": "2026-11-03T10:00:00-03:00" }
+
+### UPDATE - alterar (troque o id)
+PUT {{base}}/api/pacientes/6
+Authorization: {{token}}
+Content-Type: application/json
+
+{ "microarea": { "id": 1 }, "nome": "Carlos Nunes da Silva", "cpf": "71428793860",
+  "dataNascimento": "1965-03-14", "consentimentoEm": "2026-11-03T10:00:00-03:00", "ativo": true }
+
+### DELETE - inativar
+DELETE {{base}}/api/pacientes/6
+Authorization: {{token}}
+
+### ---------------- Regras de negócio
+
+### RN04 - médico sem CRM ativo é recusado
+POST {{base}}/api/usuarios
+Authorization: {{token}}
+Content-Type: application/json
+
+{ "nome": "Dr. Teste", "email": "teste@ruralmed.dev", "cpf": "10000000099", "senha": "segredo1",
+  "perfil": "MEDICO", "especialidadeId": 1, "crm": "999999", "ufCrm": "SP", "crmAtivo": false }
+
+### RN03 - triagem incompleta é recusada (faça login como acs@ruralmed.dev antes)
+POST {{base}}/api/triagens/sincronizar
+Authorization: {{token}}
+Content-Type: application/json
+
+[ { "idLocal": "8a7c2f4e-1b2d-4c3e-9f10-000000000001", "pacienteId": 1,
+    "coletadoEm": "2026-11-03T09:30:00-03:00", "dados": { "queixaPrincipal": "Dor de cabeça" } } ]
+
+### Triagem completa: o servidor calcula o escore (envie duas vezes e veja "JA_EXISTIA")
+POST {{base}}/api/triagens/sincronizar
+Authorization: {{token}}
+Content-Type: application/json
+
+[ { "idLocal": "8a7c2f4e-1b2d-4c3e-9f10-112233445566", "pacienteId": 1,
+    "coletadoEm": "2026-11-03T09:30:00-03:00",
+    "dados": { "queixaPrincipal": "Falta de ar", "temperatura": 37.2, "pressaoSistolica": 150,
+               "pressaoDiastolica": 95, "frequenciaCardiaca": 110, "saturacaoO2": 89, "dor": 3,
+               "comorbidades": ["hipertensão"] },
+    "relato": "Cansaço e falta de ar ao deitar" } ]
+
+### Fila do médico ordenada pelo escore - RN05 (login como cardio@ruralmed.dev)
+GET {{base}}/api/fila
+Authorization: {{token}}
+
+### Relatório do gestor - RF05 (login como gestor@ruralmed.dev)
+GET {{base}}/api/relatorios/atendimentos?inicio=2026-11-01&fim=2026-11-30
+Authorization: {{token}}

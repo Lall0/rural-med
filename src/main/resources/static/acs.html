@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - ACS</title>
+    <link rel="stylesheet" href="css/estilo.css?v=20261116l">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><img class="logo" src="img/ruralmed-marca.svg" alt="" aria-hidden="true"><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <details class="menu-perfil">
+            <summary>Olá, <strong id="usuarioNome"></strong></summary>
+            <div class="menu-perfil-conteudo">
+                <button type="button" onclick="abrirMeuPerfil()">Meu perfil</button>
+                <button id="acaoContraste" type="button" aria-pressed="false" onclick="alternarContraste()">Alto contraste</button>
+                <button class="menu-sair" type="button" onclick="sair()">Sair</button>
+            </div>
+        </details>
+    </div>
+</header>
+<nav class="abas" aria-label="Navegação do agente de saúde">
+    <button class="aba" type="button" data-aba="triagem" onclick="mostrarAba('triagem')">Nova triagem</button>
+    <button class="aba" type="button" data-aba="enviadas" onclick="mostrarAba('enviadas')">Minhas triagens</button>
+    <button class="aba" type="button" data-aba="pacientes" onclick="mostrarAba('pacientes')">Pacientes</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="triagem">
+        <div class="pagina-cabecalho">
+            <div><p class="sobretitulo">ATENDIMENTO EM CAMPO</p><h1>Nova triagem</h1>
+                <p class="suave">Registre os sinais, sintomas e contexto do paciente em etapas.</p></div>
+        </div>
+        <div id="faixa"></div>
+        <form class="cartao" id="formTriagem" onsubmit="salvarTriagem(event)">
+            <p class="ajuda">A triagem fica salva no celular e é enviada sozinha quando houver internet.</p>
+            <section class="form-secao">
+                <h2>Identificação do atendimento</h2>
+            <div class="campo"><label for="paciente">Paciente *</label>
+                <select id="paciente" required></select></div>
+            <div class="campo"><label for="queixa">Queixa principal *</label>
+                <input id="queixa" maxlength="500" required></div>
+            </section>
+            <section class="form-secao">
+                <h2>Sinais vitais e sintomas</h2>
+            <div class="grade tres">
+                <div class="campo"><label for="temperatura">Temperatura (°C) *</label>
+                    <input id="temperatura" type="number" step="0.1" min="30" max="45" required></div>
+                <div class="campo"><label for="pas">Pressão sistólica *</label>
+                    <input id="pas" type="number" min="50" max="300" required></div>
+                <div class="campo"><label for="pad">Pressão diastólica *</label>
+                    <input id="pad" type="number" min="30" max="200" required></div>
+                <div class="campo"><label for="fc">Freq. cardíaca (bpm) *</label>
+                    <input id="fc" type="number" min="20" max="250" required></div>
+                <div class="campo"><label for="sat">Saturação O₂ (%) *</label>
+                    <input id="sat" type="number" min="50" max="100" required></div>
+                <div class="campo"><label for="dor">Dor (0 a 10) *</label>
+                    <input id="dor" type="number" min="0" max="10" required></div>
+            </div>
+            </section>
+            <section class="form-secao">
+                <h2>Contexto e observações</h2>
+            <div class="campo"><label>Comorbidades</label>
+                <div class="checks">
+                    <label><input type="checkbox" name="comorbidade" value="diabetes">Diabetes</label>
+                    <label><input type="checkbox" name="comorbidade" value="hipertensão">Hipertensão</label>
+                    <label><input type="checkbox" name="comorbidade" value="cardiopatia">Cardiopatia</label>
+                    <label><input type="checkbox" name="comorbidade" value="doença pulmonar">Doença pulmonar</label>
+                </div></div>
+            <div class="campo"><label for="relato">Relato</label>
+                <textarea id="relato" maxlength="2000" placeholder="Sintomas nas palavras do paciente"></textarea>
+                <button class="btn btn-sec btn-peq" type="button" onclick="ditar()" style="margin-top:.4rem">🎤 Ditar (RNF01)</button></div>
+            </section>
+            <button class="btn acao-principal" type="submit">Salvar triagem</button>
+        </form>
+    </section>
+
+    <section data-aba="enviadas" hidden>
+        <h2>Minhas triagens</h2>
+        <div class="lista" id="listaTriagens"></div>
+    </section>
+
+    <section data-aba="pacientes" hidden>
+        <div class="linha entre cabecalho-pacientes">
+            <div><h2>Pacientes</h2><p class="suave">Cadastro e acompanhamento dos pacientes da sua microárea.</p></div>
+            <button class="btn" type="button" onclick="formPaciente(null)">Novo paciente</button>
+        </div>
+        <div class="cartao cartao-pacientes">
+            <div class="tabela-rolagem">
+            <table class="tabela tabela-pacientes">
+                <colgroup><col><col><col><col><col><col><col></colgroup>
+                <thead><tr><th>Nome</th><th>Identificação RuralMed</th><th>Idade</th><th>Microárea</th><th>Consentimento</th><th>Situação</th><th>Ações</th></tr></thead>
+                <tbody id="tabelaPacientes"></tbody>
+            </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261116g"></script>
+<script src="js/pacientes.js?v=20261116e"></script>
+<script src="js/acs.js?v=20261116e"></script>
+</body>
+</html>

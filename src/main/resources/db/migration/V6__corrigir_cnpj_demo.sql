@@ -1,0 +1,3 @@
+UPDATE clinica_parceira
+SET cnpj = '11222333000181'
+WHERE cnpj = '12345678000190';

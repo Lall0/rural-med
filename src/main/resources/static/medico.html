@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RuralMed - Médico</title>
+    <link rel="stylesheet" href="css/estilo.css?v=20261116l">
+</head>
+<body>
+<header class="topo">
+    <div class="marca"><img class="logo" src="img/ruralmed-marca.svg" alt="" aria-hidden="true"><strong>RuralMed</strong></div>
+    <div class="topo-direita">
+        <details class="menu-perfil">
+            <summary>Olá, <strong id="usuarioNome"></strong></summary>
+            <div class="menu-perfil-conteudo">
+                <button type="button" onclick="abrirMeuPerfil()">Meu perfil</button>
+                <button id="acaoContraste" type="button" aria-pressed="false" onclick="alternarContraste()">Alto contraste</button>
+                <button class="menu-sair" type="button" onclick="sair()">Sair</button>
+            </div>
+        </details>
+    </div>
+</header>
+<nav class="abas" aria-label="Navegação médica">
+    <button class="aba" type="button" data-aba="fila" onclick="mostrarAba('fila')">Fila de casos</button>
+    <button class="aba" type="button" data-aba="historico" onclick="mostrarAba('historico')">Histórico clínico</button>
+    <button class="aba" type="button" data-aba="laudos" onclick="mostrarAba('laudos')">Meus laudos</button>
+</nav>
+
+<main class="conteudo">
+    <section data-aba="fila">
+        <div class="pagina-cabecalho">
+            <div><p class="sobretitulo">ATENDIMENTO MÉDICO</p><h1>Fila de casos</h1>
+                <p class="suave">Casos priorizados por risco. Os prioritários têm prazo de até 24 horas.</p>
+                <div class="legenda-risco"><span class="selo risco-baixo">Baixo</span><span class="selo risco-medio">Atenção</span><span class="selo risco-alto">Urgente</span></div></div>
+        </div>
+        <div class="lista" id="listaFila"></div>
+    </section>
+
+    <section data-aba="historico" hidden>
+        <div class="pagina-cabecalho">
+            <div><p class="sobretitulo">CONTINUIDADE DO CUIDADO</p><h1>Histórico clínico</h1>
+                <p class="suave">Consulte atendimentos anteriores em diferentes especialidades usando o CPF ou ID RuralMed.</p></div>
+        </div>
+        <form class="cartao busca-paciente" onsubmit="buscarPacienteMedico(event)">
+            <label for="identificadorPaciente">CPF completo ou ID RuralMed</label>
+            <div class="campo-busca">
+                <input id="identificadorPaciente" autocomplete="off" placeholder="CPF ou RM-… (ID completo)" required>
+                <button class="btn" type="submit">Localizar</button>
+            </div>
+            <p class="ajuda">A busca é exata. O CPF não será exibido nos resultados.</p>
+        </form>
+        <div id="resultadoPaciente"></div>
+    </section>
+
+    <section data-aba="laudos" hidden>
+        <div class="pagina-cabecalho"><div><p class="sobretitulo">REGISTROS</p><h1>Meus laudos</h1>
+            <p class="suave">Consulte os pareceres emitidos por você.</p></div></div>
+        <div class="cartao">
+            <table class="tabela">
+                <thead><tr><th>Data</th><th>Paciente</th><th>CID</th><th></th></tr></thead>
+                <tbody id="tabelaLaudos"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<dialog id="modal" class="modal">
+    <div class="modal-cabecalho">
+        <h2 id="modalTitulo"></h2>
+        <button class="btn-icone" type="button" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modalCorpo" class="modal-corpo"></div>
+</dialog>
+<div id="avisos" class="avisos"></div>
+
+<script src="js/comum.js?v=20261116g"></script>
+<script src="js/medico.js?v=20261116d"></script>
+</body>
+</html>
